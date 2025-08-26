@@ -1,10 +1,11 @@
 package com.example.secure_notes.security;
 
+import com.example.secure_notes.entity.User;
+
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
 import java.security.Key;
@@ -23,9 +24,10 @@ public class JwtUtil {
     }
 
     // Generate a token for a user
-    public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap();
-        return createToken(claims, userDetails.getUsername());
+    public String generateToken(User user) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("roles", user.getRoles());
+        return createToken(claims, user.getUsername());
     }
 
     // Create the token with claims, subject, timestamp, expiration and signing
@@ -50,9 +52,9 @@ public class JwtUtil {
     }
 
     // Validates the tplem by checking username and expiration
-    public boolean validateToken(String token, UserDetails userDetails) {
+    public boolean validateToken(String token, User user) {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        return (username.equals(user.getUsername()) && !isTokenExpired(token));
     }
 
     // Checks if the token is expired
