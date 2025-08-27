@@ -5,6 +5,7 @@ import com.example.secure_notes.entity.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -51,10 +52,15 @@ public class JwtUtil {
         return extractAllClaims(token).getExpiration();
     }
 
-    // Validates the tplem by checking username and expiration
+    // Validates the token by checking username and expiration
     public boolean validateToken(String token, User user) {
         final String username = extractUsername(token);
         return (username.equals(user.getUsername()) && !isTokenExpired(token));
+    }
+
+    public boolean validateToken(String token, UserDetails userDetails) {
+        String username = extractUsername(token);
+        return username != null && username.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
     // Checks if the token is expired
