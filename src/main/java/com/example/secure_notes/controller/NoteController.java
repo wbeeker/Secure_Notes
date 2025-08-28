@@ -38,9 +38,9 @@ public class NoteController {
     // READ ALL
     @GetMapping
     public ResponseEntity<List<Note>> getAllNotes(@RequestBody String content, @AuthenticationPrincipal UserDetails userDetails) {
-        User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(() -> new RuntimeException("User not found."))
-        List<Notes> notes = noteService.getAllNotesForUser(user);
-        return notes;
+        User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(() -> new RuntimeException("User not found."));
+        List<Note> notes = noteService.getAllNotesForUser(user);
+        return ResponseEntity.ok(notes);
     }
 
     // READ SINGLE
