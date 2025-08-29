@@ -44,7 +44,7 @@ public class NoteController {
     }
 
     // READ SINGLE
-    @GetMapping
+    @GetMapping("/{id}")
     public ResponseEntity<Note> getNote(@RequestBody String content, @AuthenticationPrincipal UserDetails userDetails) {
         User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(() -> new RuntimeException("User not found."));
         Optional<Note> note = noteService.getNoteById(user.getId(), user);
