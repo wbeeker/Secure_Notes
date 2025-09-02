@@ -1,5 +1,6 @@
 package com.example.secure_notes.controller;
 
+import com.example.secure_notes.dto.CreateNoteRequest;
 import com.example.secure_notes.entity.Note;
 import com.example.secure_notes.entity.User;
 import com.example.secure_notes.repository.UserRepository;
@@ -29,9 +30,9 @@ public class NoteController {
     
     // CREATE
     @PostMapping
-    public ResponseEntity<Note> createNote(@RequestBody String content, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<Note> createNote(@RequestBody CreateNoteRequest request, @AuthenticationPrincipal UserDetails userDetails) {
         User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(() -> new RuntimeException("User not found."));
-        Note createdNote = noteService.createNote(content, user);
+        Note createdNote = noteService.createNote(request.getTitle(), request.getContent(), user);
         return ResponseEntity.ok(createdNote);
     }
 

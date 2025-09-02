@@ -26,9 +26,10 @@ public class NoteService {
     }
     
     // CREATE
-    public Note createNote(String content, User user) {
+    public Note createNote(String title, String content, User user) {
         String encrypted = aesEncryptionUtil.encrypt(content);
         Note note = new Note();
+        note.setTitle("Untitled Note");
         note.setContent(encrypted);
         note.setUser(user);
         return noteRepository.save(note);
