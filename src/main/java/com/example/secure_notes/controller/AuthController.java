@@ -7,10 +7,12 @@ import com.example.secure_notes.service.AuthService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
+@Component
 public class AuthController {
 
     private final AuthService authService;
@@ -31,5 +33,9 @@ public class AuthController {
         JwtResponse response = authService.login(loginRequest);
         return ResponseEntity.ok(response);
     }
-    
+
+    @GetMapping("/test")
+    public String test() {
+        return "AuthController is working!";
+    }
 }
