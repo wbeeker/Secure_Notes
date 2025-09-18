@@ -4,6 +4,8 @@ public class CreateNoteRequest {
     private String title;
     private String content;
 
+    public CreateNoteRequest() {}
+
     public CreateNoteRequest(String title, String content) {
         this.title = title;
         this.content = content;

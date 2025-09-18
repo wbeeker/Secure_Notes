@@ -46,7 +46,7 @@ public class NoteController {
 
     // READ SINGLE
     @GetMapping("/{id}")
-    public ResponseEntity<Note> getNote(@RequestBody String content, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<Note> getNote(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
         User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(() -> new RuntimeException("User not found."));
         Optional<Note> note = noteService.getNoteById(user.getId(), user);
         return note.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
@@ -54,9 +54,9 @@ public class NoteController {
 
     // UPDATE
     @PutMapping("/{id}")
-    public ResponseEntity<Note> updateNote(@PathVariable Long id, @RequestBody String newContent, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<Note> updateNote(@PathVariable Long id, @RequestBody CreateNoteRequest request, @AuthenticationPrincipal UserDetails userDetails) {
         User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(() -> new RuntimeException("User not found."));
-        Optional<Note> updatedNote = noteService.updateNote(id, newContent, user);
+        Optional<Note> updatedNote = noteService.updateNote(id, request.getTitle(), request.getContent(), user);
         return updatedNote.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
