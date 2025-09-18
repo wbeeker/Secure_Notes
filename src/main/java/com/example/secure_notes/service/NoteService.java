@@ -52,9 +52,10 @@ public class NoteService {
     }
 
     // UPDATE
-    public Optional<Note> updateNote(Long id, String newContent, User user) {
+    public Optional<Note> updateNote(Long id, String title, String content, User user) {
         return noteRepository.findByIdAndUser(id, user).map(note -> {
-            note.setContent(aesEncryptionUtil.encrypt(newContent));
+            note.setTitle(title != null ? title : "Untitiled Note");
+            note.setContent(aesEncryptionUtil.encrypt(content));
             return noteRepository.save(note);
         });
     }
