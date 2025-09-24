@@ -38,12 +38,13 @@ public class NoteController {
 
     // READ ALL
     @GetMapping
-    public ResponseEntity<List<Note>> getAllNotes(@RequestBody String content, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<List<Note>> getAllNotes(@AuthenticationPrincipal UserDetails userDetails) {
+        System.out.println("NoteController reached, user: " + userDetails.getUsername()); // debug
         User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(() -> new RuntimeException("User not found."));
         List<Note> notes = noteService.getAllNotesForUser(user);
         return ResponseEntity.ok(notes);
     }
-
+    
     // READ SINGLE
     @GetMapping("/{id}")
     public ResponseEntity<Note> getNote(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {

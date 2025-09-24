@@ -532,7 +532,9 @@
                     showError('Session expired. Please login again.');
                     return null;
                 }
-
+                
+                console.log('Sending request with headers:', {...defaultHeaders, ...options.headers});
+                
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}`);
                 }
