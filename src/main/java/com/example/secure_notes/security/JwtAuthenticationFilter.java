@@ -15,39 +15,67 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+/*
+ * JWT authentication filter that validates JWT tokens on incoming requests.
+ * Filters all HTTP requests and validates JWT tokens found in the Authorization header. 
+ * If a valid token is present, it extracts the user information
+ * and sets up Spring Security authentication context. This enables stateless,
+ * token-based authentication throughout the application.
+ */
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    /*
+     * Utility class for JWT operations (token parsing, validation, etc.).
+     */
     private final JwtUtil jwtUtil;
+
+    /*
+     * Service for loading user-specific data.
+     */
     private final UserDetailsService userDetailsService;
 
+    /*
+     * Constructs a new JwtAuthenticationFilter with required dependencies. 
+     * 
+     * @param jwtUtil the JWT utility for token operations
+     * @param userDetailsService the service for loading user details
+     */
     public JwtAuthenticationFilter(JwtUtil jwtUtil, UserDetailsService userDetailsService) {
         this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
     }
 
+    /*
+     * Processes each HTTP request to validate JWT tokens and set up authentication.
+     * 
+     * This method is called once per request by the Spring Security filter chain.
+     * 
+     * @param request the HTTP servlet request being processed
+     * @param response the HTTP servlet response to be sent
+     * @param filterChain the filter chain to continue processing after authentication
+     * @throws ServletException if a servlet-specific error occurs during filtering
+     * @throws IOException if an I/O error occurs during filtering
+
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // Skip authentication for auth endpoints
         String requestPath = request.getRequestURI();
-        System.out.println("== JWT Filter Processing: " + requestPath); // debug
 
         if (requestPath.startsWith("/api/auth/") || requestPath.startsWith("/api/health")) {
-            System.out.println("Skipping JWT for: " + requestPath); // debug
             filterChain.doFilter(request, response);
             return;
         }
         
         final String authHeader = request.getHeader("Authorization");
-        System.out.println("Auth header present: " + (authHeader != null)); // debug
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            System.out.println("No Bearer token found"); // debug
             filterChain.doFilter(request, response);
             return;
         }
 
         final String token = authHeader.substring(7);
-        System.out.println("Token starts with: " + token.substring(0, 10)); // debug
 
         try {
             final String username = jwtUtil.extractUsername(token);
@@ -76,7 +104,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         System.out.println("SecurityContext after JWT: " + SecurityContextHolder.getContext().getAuthentication());
         filterChain.doFilter(request, response);
     }
-
-
     
 }
