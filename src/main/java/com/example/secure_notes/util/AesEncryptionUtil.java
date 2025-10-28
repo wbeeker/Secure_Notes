@@ -9,13 +9,35 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 
+/*
+ * Utility class for AES encryption and decryption of note content.
+ * 
+ */
+
 @Component
 public class AesEncryptionUtil {
+    /*
+     * The encryption algorithm identifier.
+     */
     private static final String ALGORITHM = "AES";
+
+    /*
+     * The AES secret key specification used for encryption and decryption.
+     */
     private SecretKeySpec secretKeySpec;
+
+    /*
+     * The secret key string injected from application.properties.
+     */
     @Value("${aes.secret}")
     private  String SECRET_KEY;
 
+    /*
+     * Initializes the AES encryption key after dependency injection.
+     * 
+     * @throws IllegalArgumentException if the secret key is not 16, 24, or 32 bytes
+     * @throws NullPointerException if SECRET_KEY was not injected (missing config)
+     */
     @PostConstruct
     public void init() {
         byte[] keyBytes = SECRET_KEY.getBytes();
@@ -25,7 +47,15 @@ public class AesEncryptionUtil {
         this.secretKeySpec = new SecretKeySpec(keyBytes, ALGORITHM);
     }
 
-
+    /*
+     * Ecrypts plaintext content using AES encryption. Returns a Base64-encoded encrypted
+     * string.
+     * 
+     * @param plainText the plaintext string to encrypt (must not be null)
+     * @return Base64-encoded encrypted string safe for storage
+     * @throws RuntimeException if encryption fails for any reason (wraps underlying exceptions)
+     * @throws NullPointerException if plainText is null
+     */
     public String encrypt(String plainText) {
         try {
             Cipher cipher = Cipher.getInstance(ALGORITHM);
@@ -37,6 +67,15 @@ public class AesEncryptionUtil {
         }
     }
 
+    /*
+     * Decrypts AES-encrypted content back to plaintext.
+     * 
+     * @param encryptedText the Base64-encoded encrypted string to decrypt (must not be null)
+     * @return the original plaintext string
+     * @throws RuntimeException if decryption fails for any reason (wraps underlying exceptions)
+     * @throws NullPointerException if encryptedText is null
+     * @throws IllegalArgumentException if encryptedText is not valid Base64
+     */
     public String decrypt(String encryptedText) {
         try {
             Cipher cipher = Cipher.getInstance(ALGORITHM);
