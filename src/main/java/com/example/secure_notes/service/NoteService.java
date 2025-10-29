@@ -3,7 +3,6 @@ package com.example.secure_notes.service;
 import com.example.secure_notes.entity.Note;
 import com.example.secure_notes.entity.User;
 import com.example.secure_notes.repository.NoteRepository;
-import com.example.secure_notes.repository.UserRepository;
 import com.example.secure_notes.util.AesEncryptionUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,13 +70,31 @@ public class NoteService {
      * @return an Optional containing the note with decrypted content if found and owned by user,
      *         or Optional.empty() if not found or not owned by user
      * @throws RuntimeException if decryption fails
-     * @throws org.springframework.dao.DataAccessException if database query fails
+     * @throws DataAccessException if database query fails
      */
     public List<Note> getAllNotesForUser(User user) {
         return noteRepository.findByUser(user).stream().map(note -> {
             note.setContent(aesEncryptionUtil.decrypt(note.getContent()));
             return note;
         }).collect(Collectors.toList());
+    }
+
+    /*
+     * Retrieves a single note by ID for a specific user with decrypted content.
+     * 
+     * @param id the ID of the note to retrieve (must not be null)
+     * @param user the user who should own the note (must not be null)
+     * @return an Optional containing the note with decrypted content if found and owned by user,
+     *         or Optional.empty() if not found or not owned by user
+     * @throws RuntimeException if decryption fails
+     * @throws DataAccessException if database query fails
+     * 
+     */
+    public Optional<Note> getNoteById(Long id, User user) {
+        return noteRepository.findByIdAndUser(id, user).map(note -> {
+            note.setContent(aesEncryptionUtil.decrypt(note.getContent()));
+            return note;
+        });
     }
 
     /*
@@ -92,10 +109,11 @@ public class NoteService {
      * @throws NullPointerException if content or user is null
      * @throws RuntimeException if encryption or database operation fails
      */
-    public Optional<Note> getNoteById(Long id, User user) {
+    public Optional<Note> updateNote(Long id, String title, String content, User user) {
         return noteRepository.findByIdAndUser(id, user).map(note -> {
-            note.setContent(aesEncryptionUtil.decrypt(note.getContent()));
-            return note;
+            note.setTitle(title != null ? title : "Untitiled Note");
+            note.setContent(aesEncryptionUtil.encrypt(content));
+            return noteRepository.save(note);
         });
     }
 
@@ -107,15 +125,6 @@ public class NoteService {
      * @return true if note was found and deleted, false if not found or not owned by user
      * @throws DataAccessException if database operation fails
      */
-    public Optional<Note> updateNote(Long id, String title, String content, User user) {
-        return noteRepository.findByIdAndUser(id, user).map(note -> {
-            note.setTitle(title != null ? title : "Untitiled Note");
-            note.setContent(aesEncryptionUtil.encrypt(content));
-            return noteRepository.save(note);
-        });
-    }
-
-    // DELETE
     public boolean deleteNote(Long id, User user) {
         Optional<Note> optionalNote = noteRepository.findByIdAndUser(id, user);
         if (optionalNote.isPresent()) {
