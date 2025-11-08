@@ -86,7 +86,7 @@ public class NoteController {
     @GetMapping("/{id}")
     public ResponseEntity<Note> getNote(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
         User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(() -> new RuntimeException("User not found."));
-        Optional<Note> note = noteService.getNoteById(user.getId(), user);
+        Optional<Note> note = noteService.getNoteById(id, user);
         return note.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
