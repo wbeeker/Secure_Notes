@@ -9,7 +9,10 @@ import com.example.secure_notes.util.AesEncryptionUtil;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,9 +22,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class NoteServiceTest {
-
+    @Mock
     private NoteRepository noteRepository;
+
+    @Mock
     private AesEncryptionUtil aesEncryptionUtil;
 
     @InjectMocks
@@ -31,10 +37,6 @@ class NoteServiceTest {
 
     @BeforeEach
     void setUp() {
-        noteRepository = mock(NoteRepository.class);
-        aesEncryptionUtil = mock(AesEncryptionUtil.class);
-        noteService = new NoteService(noteRepository, aesEncryptionUtil);
-
         user = new User();
         user.setId(1L);
         user.setUsername("testuser");
