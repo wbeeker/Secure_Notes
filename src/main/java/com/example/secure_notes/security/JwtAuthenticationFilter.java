@@ -63,7 +63,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // Skip authentication for auth endpoints
         String requestPath = request.getRequestURI();
 
-        if (requestPath.startsWith("/api/auth/") || requestPath.startsWith("/api/health")) {
+        if (requestPath.startsWith("/api/auth/") || 
+            requestPath.startsWith("/api/health") ||
+            requestPath.startsWith("/swagger-ui/") ||
+            requestPath.startsWith("/v3/api-docs/")) {
             filterChain.doFilter(request, response);
             return;
         }
