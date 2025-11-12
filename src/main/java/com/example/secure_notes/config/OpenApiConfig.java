@@ -1,4 +1,4 @@
-package com.example.secure_notes.security;
+package com.example.secure_notes.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -14,7 +14,6 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
-        // Define the security scheme
         final String securitySchemeName = "bearerAuth";
         
         return new OpenAPI()
@@ -23,12 +22,10 @@ public class OpenApiConfig {
                 .version("1.0")
                 .description("REST API for managing encrypted notes with JWT authentication")
                 .contact(new Contact()
-                    .name("Your Name")
-                    .email("your.email@example.com")))
-            // Add security requirement globally
+                    .name("William Beeker")
+                    .email("beeker.w@northeastern.edu")))
             .addSecurityItem(new SecurityRequirement()
                 .addList(securitySchemeName))
-            // Define security scheme
             .components(new Components()
                 .addSecuritySchemes(securitySchemeName, new SecurityScheme()
                     .name(securitySchemeName)
