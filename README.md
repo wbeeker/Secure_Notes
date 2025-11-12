@@ -341,21 +341,3 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-
-## 🙏 Acknowledgments
-
-- Spring Boot team for the excellent framework
-- Spring Security for robust authentication features
-- All contributors and users of this project
-
-## 📞 Support
-
-If you have any questions or need help, please:
-- Open an issue on GitHub
-
----
-
-⭐ If you found this project helpful, please consider giving it a star!
-
-**Built with ❤️ using Spring Boot**
