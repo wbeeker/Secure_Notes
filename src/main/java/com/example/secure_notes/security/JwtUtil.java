@@ -69,8 +69,8 @@ public class JwtUtil {
      *  }
      * 
      * @param claims additional claims to include in the token (e.g. roles)
-     * @param subject the subject of the token (typically username)
-     * @return a compan, URL-safe JWT string
+     * @param subject the subject of the token (username)
+     * @return a compact, URL-safe JWT string
      */
     private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
