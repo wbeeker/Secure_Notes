@@ -314,11 +314,7 @@ spring.datasource.password=${DB_PASSWORD}
 - [ ] Password reset functionality
 - [ ] Multi-factor authentication (MFA)
 - [ ] Rate limiting for API endpoints
-- [ ] Soft delete with recovery
 - [ ] Note version history
-- [ ] Export/Import functionality
-- [ ] Frontend web application
-- [ ] Mobile applications (iOS/Android)
 
 ## 📝 API Documentation
 

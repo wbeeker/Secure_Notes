@@ -89,7 +89,4 @@ public class UserServiceTest {
         assertEquals("test@example.com", result.getEmail());
         verify(userRepository).save(fullUser);
     }
-
-
-    
 }

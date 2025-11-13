@@ -89,7 +89,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 System.out.println("Found user: " + userDetails.getUsername());
 
                 if (jwtUtil.validateToken(token, userDetails)) {
-                    System.out.println("Token validation SUCCESS");
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
 
@@ -103,8 +102,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         } catch (Exception e) {
             System.out.println("JWT processing error: " + e.getMessage());
         }
-
-        System.out.println("SecurityContext after JWT: " + SecurityContextHolder.getContext().getAuthentication());
         filterChain.doFilter(request, response);
     }
     
