@@ -42,12 +42,11 @@ class UserTest {
         
         List<Note> notes = new ArrayList<>();
         
-        User user = new User(1L, "testuser", "test@example.com", 
+        User user = new User(1L, "testuser", 
                            "hashedPassword", roles, notes, testTime);
 
         assertEquals(1L, user.getId());
         assertEquals("testuser", user.getUsername());
-        assertEquals("test@example.com", user.getEmail());
         assertEquals("hashedPassword", user.getPasswordHash());
         assertEquals(2, user.getRoles().size());
         assertTrue(user.getRoles().contains("USER"));
@@ -68,13 +67,6 @@ class UserTest {
     void testUsernameGetterSetter() {
         user.setUsername("johndoe");
         assertEquals("johndoe", user.getUsername());
-    }
-
-    @Test
-    @DisplayName("Test setEmail and getEmail")
-    void testEmailGetterSetter() {
-        user.setEmail("john@example.com");
-        assertEquals("john@example.com", user.getEmail());
     }
 
     @Test
@@ -125,13 +117,6 @@ class UserTest {
     void testTimeCreatedGetterSetter() {
         user.setTimeCreated(testTime);
         assertEquals(testTime, user.getTimeCreated());
-    }
-
-    @Test
-    @DisplayName("Test user with null email")
-    void testNullEmail() {
-        user.setEmail(null);
-        assertNull(user.getEmail());
     }
 
     @Test

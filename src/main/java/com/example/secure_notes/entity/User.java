@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * Database Mapping:
  *  Table Name: "users"
  *  Primary key: aut-generated ID
- *  Unique constraints: username, email
+ *  Unique constraints: username
  * 
  * Relationships:
  *  One-to-Many with Note entities
@@ -39,11 +39,7 @@ public class User {
      */
     @Column(unique = true, nullable = false)
     private String username;
-    /*
-     * The email address of the user. Optional but must be unique if provided. 
-     */
-    @Column(unique = true, nullable = true)
-    private String email;
+
     /*
      * The hashed password for the user. 
      */
@@ -80,16 +76,14 @@ public class User {
      * 
      * @param id the unique identifier for the user
      * @param username the uniqu username(required)
-     * @param email the email address (optional, must be unique if provided)
      * @param passwordHash the hashed password (required)
      * @param roles the set of roles assigned to the user
      * @param notes the list of ntoes owned by the user
      * @param timeCreated the timestamp when the user was created
      */
-    public User(Long id, String username, String email, String passwordHash, Set<String> roles, List<Note> notes, LocalDateTime timeCreated) {
+    public User(Long id, String username, String passwordHash, Set<String> roles, List<Note> notes, LocalDateTime timeCreated) {
         this.id = id;
         this.username = username;
-        this.email = email;
         this.passwordHash = passwordHash;
         this.roles = roles;
         this.notes = notes;
@@ -130,25 +124,6 @@ public class User {
      */
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    /*
-     * Gets the email for this user.
-     * 
-     * @return the email address
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /*
-     * Sets the email address for this user. 
-     * 
-     * @param email (optional, must be unique if provided)
-     * @throws PErsistenceExcetion if email is not unique. 
-     */
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     /*
