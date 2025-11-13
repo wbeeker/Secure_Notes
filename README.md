@@ -44,8 +44,7 @@ A full-stack secure notes application built with Spring Boot that provides end-t
 - AES-256 Encryption
 
 **Database:**
-- H2 (development)
-- PostgreSQL/MySQL (production-ready)
+- PostgreSQL
 
 **Build Tool:**
 - Gradle
@@ -55,7 +54,7 @@ A full-stack secure notes application built with Spring Boot that provides end-t
 ### Prerequisites
 - Java 17 or higher
 - Gradle 8.x
-- (Optional) PostgreSQL or MySQL for production
+- PostgreSQL 
 
 ### Installation
 
@@ -76,10 +75,12 @@ A full-stack secure notes application built with Spring Boot that provides end-t
    # AES Encryption Configuration
    aes.secret=sixteenByteKey!!
    
-   # Database (H2 for development)
-   spring.datasource.url=jdbc:h2:mem:securenotesdb
-   spring.datasource.driverClassName=org.h2.Driver
+   # Database 
+   spring.datasource.url=jdbc:postgresql://localhost:5432/secure_notes_db
    spring.jpa.hibernate.ddl-auto=update
+   spring.jpa.show-sql=true
+   spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+
 ```
 
 3. **Build the project**
