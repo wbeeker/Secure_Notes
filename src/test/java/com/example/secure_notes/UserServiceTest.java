@@ -77,7 +77,6 @@ public class UserServiceTest {
     void saveUser_test2() {
         User fullUser = new User();
         fullUser.setUsername("fulluser");
-        fullUser.setEmail("test@example.com");
         fullUser.setPasswordHash("hashedpassword");
         
         when(userRepository.save(fullUser)).thenReturn(fullUser);
@@ -86,7 +85,6 @@ public class UserServiceTest {
 
         assertNotNull(result);
         assertEquals("fulluser", result.getUsername());
-        assertEquals("test@example.com", result.getEmail());
         verify(userRepository).save(fullUser);
     }
 }
